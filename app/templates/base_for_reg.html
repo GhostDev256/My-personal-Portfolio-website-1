@@ -5,7 +5,6 @@
     <header class="navbar">
         <div class="navbar-container">
             <div class="navbar-main"> 
-                {# можно добавить логотип или название сайта здесь #}
                 <ul class="navbar-links"> 
                     <li><a href="{{ url_for('index') }}" class="navbar-link{% if request.path == url_for('index') %} active{% endif %}">Главная</a></li>
                     <li><a href="{{ url_for('about') }}" class="navbar-link{% if request.path == url_for('about') %} active{% endif %}">Обо мне</a></li> 
@@ -21,7 +20,7 @@
             </div>
 
             <div class="navbar-profile">
-                {% if current_user.is_authenticated %} {# Проверяем, залогинен ли пользователь #}
+                {% if current_user.is_authenticated %}
                     <img src="{{ current_user.avatar(32) }}" class="index-avatar">
                     <a href="{{ url_for('profile', username=current_user.username) }}" class="navbar-link btn-link">Профиль</a> 
                     <a href="{{ url_for('logout') }}" class="navbar-link btn-link">Выход</a>
