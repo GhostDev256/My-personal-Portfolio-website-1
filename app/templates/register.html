@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+
+{% block content %}
+<body>
+    <div class="login-container">
+        <h1>Регистрация</h1>
+        <form action="" method="post" class="login-form">
+            {{ form.hidden_tag() }}
+            <div class="form-group">
+                {{ form.username.label }}
+                {{ form.username(size=32, class_='form-control', placeholder='Введите логин') }}
+                {% for error in form.username.errors %}
+                <span class="error-message">[{{ error }}]</span>
+                {% endfor %}
+            </div>
+            <div class="form-group">
+                {{ form.email.label }}
+                {{ form.email(size=64, class_='form-control', placeholder='Введите Email') }}
+                {% for error in form.email.errors %}
+                <span class="error-message">[{{ error }}]</span>
+                {% endfor %}
+            </div>
+            <div class="form-group">
+                {{ form.password.label }}
+                {{ form.password(size=32, class_='form-control', placeholder='Введите пароль') }}
+                {% for error in form.password.errors %}
+                <span class="error-message">[{{ error }}]</span>
+                {% endfor %}
+            </div>
+            <div class="form-group">
+                {{ form.password2.label }}
+                {{ form.password2(size=32, class_='form-control', placeholder='Повторите пароль') }}
+                {% for error in form.password2.errors %}
+                <span class="error-message">[{{ error }}]</span>
+                {% endfor %}
+            </div>
+            <div class="form-group">
+                {{ form.submit(class_='btn btn-primary') }}
+            </div>
+        </form>
+        <p class="register-link">Уже зарегистрированы? <a href="{{ url_for('login') }}">Вход</a></p>
+    </div>
+</body>
+{% endblock %}

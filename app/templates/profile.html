@@ -1,0 +1,87 @@
+{% extends "base_for_reg.html" %}
+
+{% block title %}Профиль пользователя{% endblock %} 
+
+{% block content_reg %}
+<main class="page-content"> 
+    <section class="page-container profile-page"> 
+
+        <h1>Профиль пользователя</h1> 
+
+        <div class="profile-header">
+            <img src="{{ user.avatar(128) }}" alt="Аватар пользователя {{ user.username }}" class="profile-avatar">
+            <div class="profile-info"> 
+                <h2>{{user.username }}</h2> 
+                
+                <p>
+                    {% if is_online %}
+                        {# Если пользователь в сети (флаг is_online True), показываем статус #}
+                        <span class="online-status online">В сети</span>
+                    {% else %}
+                        <p>Последний раз в сети: {{ moment(user.last_seen).format('LLL') }}</p>
+                    {% endif %}
+                </p>
+
+            </div>
+        </div>
+
+        <hr>
+
+        <div class="edit-profile-form-section">
+            {% if edit_form %} 
+                <h2>Редактировать профиль</h2>
+                <form action="" method="post" enctype="multipart/form-data" class="login-form"> 
+                    {{ edit_form.hidden_tag() }} 
+       
+                     <div class="form-group">
+                       {{ edit_form.username.label }}<br>
+                       {{ edit_form.username(size=32, class_='form-control') }}
+                       {% for error in edit_form.username.errors %}
+                           <span class="error-message">[{{ error }}]</span>
+                       {% endfor %}
+                     </div>
+       
+                     <div class="form-group">
+                       {{ edit_form.about_me.label }}<br>
+                       {{ edit_form.about_me(cols=50, rows=4, class_='form-control') }}
+                        {% for error in edit_form.about_me.errors %}
+                            <span class="error-message">[{{ error }}]</span>
+                        {% endfor %}
+                     </div>
+       
+                      <div class="form-group">
+                          {{ edit_form.avatar.label }}<br>
+                          {{ edit_form.avatar(class_='form-control-file') }}
+                           {% for error in edit_form.avatar.errors %}
+                               <span class="error-message">[{{ error }}]</span>
+                           {% endfor %}
+                      </div>
+       
+                      <div class="form-group">
+                          {{ edit_form.submit(class_='btn btn-primary', value='Обновить') }}
+                      </div>
+                </form>
+       
+            {% elif follow_form %} 
+                 <div class="viewing-profile-info"> 
+                     <h3>Обо мне</h3>
+                     <p>{{ user.about_me or 'Информация отсутствует.' }}</p>
+       
+                     <form action="{{ url_for('follow' if not is_following else 'unfollow', username=user.username) }}" method="post">
+                          {{ follow_form.hidden_tag() }} {# CSRF токен для формы подписки #}
+                          {{ follow_form.submit(class_='btn btn-primary', value=('Отписаться' if is_following else 'Подписаться')) }}
+                     </form>
+                 </div>
+       
+            {% else %} 
+                 <div class="viewing-profile-info">
+                      <h3>Обо мне</h3>
+                      <p>{{ user.about_me or 'Информация отсутствует.' }}</p>
+                 </div>
+            {% endif %}
+       
+       </div>
+
+    </section>
+</main>
+{% endblock %}

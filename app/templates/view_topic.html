@@ -1,0 +1,69 @@
+{% extends "base_for_reg.html" %}
+
+{% block title %}{{ topic.title }} - Форум{% endblock %} 
+
+{% block content_reg %}
+    <main class="main-content"> 
+        <section class="page-container topic-view-page"> 
+            <div class="topic-section">
+                <h1 class="topic-title-view">{{ topic.title }}</h1>
+                <p class="topic-meta-view">
+                    Автор: <a href="{{ url_for('profile', username=topic.author.username) }}" class="meta-link">{{ topic.author.username }}</a>
+                    | Создано: {{ moment(topic.timestamp).format('LLL') }}
+                </p>
+                <div class="topic-body-view">
+                    <p>{{ topic.body }}</p> 
+                </div>
+            </div>
+
+            <hr>
+
+            {% if current_user.is_authenticated %}
+                <div class="comment-form-section review-form-section"> 
+                    <h3>Оставить комментарий</h3>
+                    <form action="" method="post" class="login-form"> 
+                        {{ form.hidden_tag() }} 
+
+                        <div class="form-group">
+                            {{ form.body.label }}<br> 
+                            {{ form.body(cols=50, rows=5, class_='form-control', placeholder='Напишите ваш комментарий') }} 
+                            {% for error in form.body.errors %}
+                                <span class="error-message">[{{ error }}]</span> 
+                            {% endfor %}
+                        </div>
+
+                        <div class="form-group">
+                            {{ form.submit(class_='btn btn-primary') }} 
+                        </div>
+                    </form>
+                </div>
+                <hr> 
+            {% else %}
+                 <p class="login-required-message">Чтобы оставить комментарий, пожалуйста, <a href="{{ url_for('login') }}" class="text-link">войдите</a> или <a href="{{ url_for('register') }}" class="text-link">зарегистрируйтесь</a>.</p>
+                 <hr> 
+            {% endif %}
+
+            <div class="comments-list-section reviews-list-section"> 
+                <h3>Комментарии ({{ comments|length }})</h3> 
+                <div class="comments-list reviews-list"> 
+                    {% if comments %} 
+                        {% for comment in comments %}
+                            <div class="comment-item review-item">
+                                <p class="comment-meta review-meta">
+                                    <span class="comment-author reviewer-name">{{ comment.author.username }}</span> 
+                                    <span class="comment-date review-date">{{ moment(comment.timestamp).format('LLL') }}</span> 
+                                </p>
+                                <div class="comment-text review-text">
+                                    <p>{{ comment.body }}</p> 
+                                </div>
+                            </div>
+                        {% endfor %}
+                    {% else %}
+                        <p class="no-comments no-items">Комментариев пока нет.</p> 
+                    {% endif %}
+                </div>
+            </div>
+
+        </section>
+    </main>
+{% endblock %}

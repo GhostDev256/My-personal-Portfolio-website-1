@@ -1,0 +1,85 @@
+{% extends "base_for_reg.html" %}
+
+{% block title %}Форум{% endblock %} 
+
+{% block content_reg %}
+    <main class="main-content">
+        <div class="forum-layout">
+
+            <aside class="forum-sidebar">
+                <h3>Подписки</h3>
+                <ul class="subscribed-users">
+                     {% if subscribed_users %}
+                         {% for user in subscribed_users %}
+                             <li class="user-item">
+                                 <a href="{{ url_for('profile', username=user.username) }}">
+                                     <img src="{{ user.avatar(32) }}" alt="{{ user.username }}" class="user-avatar">
+                                     <span>{{ user.username }}</span>
+                                 </a>
+                             </li>
+                         {% endfor %}
+                     {% else %}
+                         <li class="no-items"><p>Нет подписок.</p></li>
+                     {% endif %}
+                </ul>
+            </aside>
+
+            <div class="forum-content">
+                <div class="forum-header"> 
+                    <div class="filter-buttons">
+                        <a href="{{ url_for('forum') }}" class="btn btn-secondary {% if active_filter == 'all' %} active{% endif %}">Главная</a>
+                        {% if current_user.is_authenticated %}       
+                            <a href="{{ url_for('forum', filter='subscribed') }}" class="btn btn-secondary {% if active_filter == 'subscribed' %} active{% endif %}">Подписки</a>
+                        {% endif %}
+                    </div>
+                    <div class="search-form">
+                         <form action="{{ url_for('search_topics') }}" method="get">
+                             <input type="text" name="q" placeholder="Поиск тем..." class="form-control search-input">
+                         </form>
+                    </div>
+                    <a href="{{ url_for('create_topic') }}" class="btn create-topic-btn">Создать тему</a>
+                </div>
+
+                <div class="topic-list-container"> 
+
+                    {% if search_query is not none %} 
+                        {% if not search_query %} {% else %}<h3>Результаты поиска для: "{{ search_query }}"</h3> {% endif %} 
+                        {% if topics %} 
+                            <ul class="topic-list">
+                                {% for topic in topics %}
+                                    <li class="topic-item">
+                                        <a href="{{ url_for('view_topic', topic_id=topic.id) }}" class="topic-link">{{ topic.title }}</a>
+                                        <p class="topic-meta">
+                                            Автор: <a href="{{ url_for('profile', username=topic.author.username) }}" class="meta-link">{{ topic.author.username }}</a>
+                                            | Создано: {{ moment(topic.timestamp).format('LLL') }}
+                                        </p>
+                                    </li>
+                                {% endfor %}
+                            </ul>
+                        {% else %} 
+                            <p class="no-items">По вашему запросу ничего не найдено.</p>
+                        {% endif %}
+                
+                    {% else %} 
+                        <h3>Темы форума</h3>
+                        {% if topics %}
+                            <ul class="topic-list">
+                                {% for topic in topics %}
+                                    <li class="topic-item">
+                                        <a href="{{ url_for('view_topic', topic_id=topic.id) }}" class="topic-link">{{ topic.title }}</a>
+                                        <p class="topic-meta">
+                                            Автор: <a href="{{ url_for('profile', username=topic.author.username) }}" class="meta-link">{{ topic.author.username }}</a>
+                                            | Создано: {{ moment(topic.timestamp).format('LLL') }}
+                                        </p>
+                                    </li>
+                                {% endfor %}
+                            </ul>
+                        {% else %}
+                            <p class="no-items">Тем пока нет.</p>
+                        {% endif %}
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </main>
+{% endblock %}

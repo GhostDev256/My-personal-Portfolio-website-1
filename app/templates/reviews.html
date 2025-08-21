@@ -1,0 +1,62 @@
+{% extends "base_for_reg.html" %}
+
+{% block content_reg %}
+<main class="page-content">
+    <section class="page-container"> 
+
+        <h1>Отзывы</h1>
+
+        <div class="review-form-section"> 
+            <h3>Оставить отзыв</h3>
+            <form action="" method="post" class="login-form">
+                {{ form.hidden_tag() }} 
+                <div class="form-group">
+                    {{ form.username.label }}<br>
+                    {{ form.username(size=32, class_='form-control', placeholder='Ваше имя') }}
+                    {% for error in form.username.errors %}
+                        <span class="error-message">[{{ error }}]</span>
+                    {% endfor %}
+                </div>
+                <div class="form-group">
+                    {{ form.text.label }}<br> 
+                    {{ form.text(cols=50, rows=4, class_='form-control', placeholder='Ваш отзыв') }}
+                    {% for error in form.text.errors %}
+                        <span class="error-message">[{{ error }}]</span>
+                    {% endfor %}
+                </div>
+                    {% if current_user.is_authenticated %}
+                    <div class="form-group">
+                        {{ form.submit(class_='btn btn-primary') }}
+                    </div>
+                    {% else %}
+                        <p class="form-group">только зарегистрированные пользователи могут оставлять комментарий</p>
+                    {% endif %}
+                    
+            </form>
+        </div>
+
+        <div class="reviews-list-section"> {# Секция для отображения существующих отзывов #}
+            <h3>Все отзывы</h3>
+            <div class="reviews-list">
+                {# Цикл по отзывам, которые передаются из вашего бэкенда #}
+                {% if reviews %} {# Предполагается, что переменная 'reviews' содержит список отзывов #}
+                    {% for review in reviews %}
+                        <div class="review-item">
+                            <p class="review-meta">
+                                <span class="reviewer-name">{% if review.username_message %} {{review.username_message}} {% else %} {{ review.author.username }} {% endif %}</span> 
+                                <span class="review-date">{{ moment(review.timestamp).format('LLL') }}</span>
+                            </p>
+                            <div class="review-text">
+                                <p>{{ review.body }}</p> {# Текст отзыва #}
+                            </div>
+                        </div>
+                    {% endfor %}
+                {% else %}
+                    <p>Отзывов пока нет.</p> {# Сообщение, если отзывов нет #}
+                {% endif %}
+            </div>
+        </div>
+
+    </section>
+</main>
+{% endblock %}

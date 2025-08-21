@@ -1,0 +1,38 @@
+{% extends "base_for_reg.html" %}
+
+{% block title %}Создать тему{% endblock %} 
+
+{% block content_reg %}
+    <main class="main-content"> 
+        <section class="page-container">
+
+            <h1>Создать новую тему на форуме</h1> 
+
+            <div class="create-topic-form-section"> 
+                <form action="" method="post" class="login-form">
+                    {{ form.hidden_tag() }} 
+
+                    <div class="form-group">
+                        {{ form.title.label }}<br> 
+                        {{ form.title(size=64, class_='form-control', placeholder='Введите заголовок темы') }} 
+                        {% for error in form.title.errors %}
+                            <span class="error-message">[{{ error }}]</span> 
+                        {% endfor %}
+                    </div>
+
+                    <div class="form-group">
+                        {{ form.body.label }}<br> 
+                        {{ form.body(cols=50, rows=10, class_='form-control', placeholder='Введите текст первого сообщения') }}
+                        {% for error in form.body.errors %}
+                            <span class="error-message">[{{ error }}]</span> 
+                        {% endfor %}
+                    </div>
+
+                    <div class="form-group">
+                        {{ form.submit(class_='btn btn-primary') }}
+                    </div>
+                </form>
+            </div>
+        </section>
+    </main>
+{% endblock %}

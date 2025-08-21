@@ -1,0 +1,23 @@
+{% extends "base_for_reg.html" %}
+
+{% block content_reg %}
+<main class="page-content"> 
+    <section class="page-container"> 
+        <h1>Мои проекты</h1> 
+        {% if myprojects %}
+            {% for project in myprojects %}
+                <div class="review-item">
+                    <p class="review-meta">
+                        <span class="reviewer-name">{{project.name}}</span> 
+                    </p>
+                    <div class="review-text">
+                        <p>{{ project.body }}</p> 
+                    </div>
+                </div>
+            {% endfor %}
+        {% else %}
+            <p>Тут пока пусто...Только сам этот сайт, на котором вы находитесь.</p>
+        {% endif %}
+    </section>
+</main>
+{% endblock %}

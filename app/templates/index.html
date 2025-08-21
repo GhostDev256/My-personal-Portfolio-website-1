@@ -1,0 +1,39 @@
+{% extends "base_for_reg.html" %}
+
+{% block title %}Главная{% endblock %} {# Убедитесь, что задаете тайтл #}
+
+{% block content_reg %}
+<main class="page-content"> 
+    <div class="hero">
+        <div class="hero-shapes">
+            <div class="shape shape-square shape-one"></div>
+            <div class="shape shape-circle shape-two"></div>
+            <div class="shape shape-line shape-three"></div>
+            <div class="shape shape-square shape-four"></div>
+            <div class="shape shape-circle shape-five"></div>
+            <div class="shape shape-line shape-six"></div>
+            <div class="shape shape-square shape-seven"></div>
+            <div class="shape shape-circle shape-eight"></div>
+        </div>
+        <div class="hero-content">
+            <h1>Создаю Веб-Сайты, Которые Работают</h1>
+            <p>Разрабатываю функциональные и современные веб-решения на стеке Python (Flask), HTML и CSS.</p>
+        </div>
+    </div>
+
+    <section class="main-section"> 
+        <h2>Превращаю Ваши Идеи в Рабочие Сайты</h2>
+        <p>Ищете разработчика для вашего веб-проекта? Я создаю индивидуальные веб-решения, которые идеально подходят для ваших задач:</p>
+        <ul>
+            <li><strong>Сайты-визитки:</strong> Эффективное онлайн-представительство для вас или вашего бизнеса.</li>
+            <li><strong>Сайты компаний:</strong> Корпоративные порталы, отражающие вашу уникальность.</li>
+            <li><strong>Блоги:</strong> Удобные площадки для публикации контента и взаимодействия с аудиторией.</li>
+            <li><strong>Онлайн-форумы:</strong> Сообщества для общения и обмена информацией.</li>
+        </ul>
+        <p>В основе моей работы – стек Python (Flask), HTML и CSS, гарантирующий надежность и гибкость.</p>
+
+        <p>Так же, если вы заинтерисованы в том, чтобы научится писасть код на пайтон для разных целей: сайты, оконные приложения, игры, аналитика, ознакомтесь с концом страницы <a href="{{ url_for('price') }}" class="text-link">Прайс</a>.</p>
+    </section>
+
+</main>
+{% endblock %}

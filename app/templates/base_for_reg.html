@@ -1,0 +1,93 @@
+{% extends "base.html" %}
+
+{% block content %}
+<body> 
+    <header class="navbar">
+        <div class="navbar-container">
+            <div class="navbar-main"> 
+                {# можно добавить логотип или название сайта здесь #}
+                <ul class="navbar-links"> 
+                    <li><a href="{{ url_for('index') }}" class="navbar-link{% if request.path == url_for('index') %} active{% endif %}">Главная</a></li>
+                    <li><a href="{{ url_for('about') }}" class="navbar-link{% if request.path == url_for('about') %} active{% endif %}">Обо мне</a></li> 
+                    <li><a href="{{ url_for('projects') }}" class="navbar-link{% if request.path == url_for('projects') %} active{% endif %}">Мои проекты</a></li> 
+                    <li><a href="{{ url_for('reviews') }}" class="navbar-link{% if request.path == url_for('reviews') %} active{% endif %}">Отзывы</a></li>
+                    <li><a href="{{ url_for('price') }}" class="navbar-link{% if request.path == url_for('price') %} active{% endif %}">Прайс</a></li>
+                    {% if current_user.is_authenticated %}
+                        <li><a href="{{ url_for('forum') }}" class="navbar-link{% if request.path == url_for('forum') %} active{% endif %}">Форум</a></li> 
+                    {% else %}
+                        <li><a href="" class="navbar-diactivate_link" title="Не-а, залогинься, маленький анонимус">Форум</a></li>
+                    {% endif %}
+                </ul>
+            </div>
+
+            <div class="navbar-profile">
+                {% if current_user.is_authenticated %} {# Проверяем, залогинен ли пользователь #}
+                    <img src="{{ current_user.avatar(32) }}" class="index-avatar">
+                    <a href="{{ url_for('profile', username=current_user.username) }}" class="navbar-link btn-link">Профиль</a> 
+                    <a href="{{ url_for('logout') }}" class="navbar-link btn-link">Выход</a>
+                    {% if current_user.is_admin %}
+                        <a href="{{ url_for('admin.index') }}" class="navbar-link btn-link">Admin</a>
+                    {% endif %}
+                {% else %}
+                    <img src="{{ url_for('static', filename='avatars/default_icon_avatar32.jpg') }}">
+                    <a href="{{ url_for('login') }}" class="navbar-link btn-link">Вход</a>
+                    <a href="{{ url_for('register') }}" class="navbar_link btn-link">Регистрация</a> 
+                {% endif %}
+            </div>
+        </div>
+    </header>
+
+    {% block content_reg %}{% endblock %} 
+
+    <footer class="footer-content">
+        <div>
+            <p>&copy; {{ 2025 }} GhostDev.ru</p>
+            <p>Контакты:</p>
+            <ul class="contact-list">
+                <li>Телеграм: <a href="https://t.me/damaska_one" target="_blank">@damaska\_one</a></li>
+                <li>ВК: <a href="https://vk.com/dmitrievyarick" target="_blank">dmitrievyarick</a></li>
+                <li>Email: <a href="mailto:ghostdeveloper256@gmail.com">ghostdeveloper256@gmail.com</a></li>
+            </ul>
+        </div>
+    </footer>
+
+    {{moment.include_moment()}}
+    {{moment.locale('ru')}}
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script> 
+
+    <script>
+        var flashedMessages =  get_flashed_messages(with_categories=true) | tojson | safe;
+      
+        document.addEventListener('DOMContentLoaded', function() {
+          if (flashedMessages && flashedMessages.length > 0) {
+            flashedMessages.forEach(function(message) {
+              var category = message[0];
+              var text = message[1];
+
+              var messageType = 'info'; 
+              if (category === 'message' || category === 'info') {
+                messageType = 'info';
+              } else if (category === 'warning') {
+                messageType = 'warning';
+              } else if (category === 'error' || category === 'danger') {
+                messageType = 'error';
+              } else if (category === 'success') {
+                messageType = 'success';
+              }
+      
+              iziToast.show({
+                title: category.charAt(0).toUpperCase() + category.slice(1), 
+                message: text,
+                position: 'topRight', 
+                timeout: 5000, 
+                color: messageType, 
+                progressBarColor: 'rgba(0, 0, 0, 0.2)', 
+                transitionIn: 'fadeInLeft',
+                transitionOut: 'fadeOutRight',
+              });
+            });
+          }
+        });
+      </script>
+</body> 
+{% endblock %}
